@@ -8,7 +8,7 @@
 
 import UIKit
 
-public class ActivityIndication: UIVisualEffectView {
+public class ATActivity: UIVisualEffectView {
     
     private let blurEffect: UIBlurEffect = UIBlurEffect(style: UIBlurEffectStyle.Light)
     private var vibrancyEffect: UIVibrancyEffect?
@@ -18,13 +18,19 @@ public class ActivityIndication: UIVisualEffectView {
     private var isAnimating = false
     private var dictionaryOfViews: [String: UIView]?
     
-    public init(){
+    public init(withSpinnerColor spinnerColor: UIColor?, withBackgroundColor backgroundColor: UIColor?){
         super.init(effect: blurEffect)
+        
+        if backgroundColor != nil {
+            self.backgroundColor = backgroundColor
+        }
         
         self.vibrancyEffect =  UIVibrancyEffect(forBlurEffect: blurEffect)
         self.vibrancyEffectView = UIVisualEffectView(effect: self.vibrancyEffect!)
         self.activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.WhiteLarge)
-        //self.activityIndicator!.color = Colors.pebbleBeeMaroon
+        if spinnerColor != nil {
+            self.activityIndicator?.color = spinnerColor
+        }
         
         self.savingLabel = UILabel()
         self.savingLabel?.textAlignment = NSTextAlignment.Center
@@ -46,7 +52,6 @@ public class ActivityIndication: UIVisualEffectView {
         self.activityIndicator?.translatesAutoresizingMaskIntoConstraints = false
         self.savingLabel?.translatesAutoresizingMaskIntoConstraints = false
         
-        //self.dictionaryOfViews = ["me" : self.contentView, "VisualEffectsView" : self.vibrancyEffectView!.contentView, "Activity" : self.activityIndicator!, "label" : self.savingLabel!]
         self.dictionaryOfViews = ["me" : self, "Activity" : self.activityIndicator!, "label" : self.savingLabel!, "Vibrancy": self.vibrancyEffectView!]
         
         self.setUpConstraintsForSubViews(self, otheViews: self.dictionaryOfViews!)
@@ -61,14 +66,10 @@ public class ActivityIndication: UIVisualEffectView {
         self.savingLabel?.text = newText
     }
     
-    public func startAnimating(viewToCover theView: UIView, withTimer: Bool, withMessage: String, coverEntireView: Bool) {
+    public func startAnimating(viewToCover theView: UIView, withMessage: String, coverEntireView: Bool) {
         
         self.savingLabel?.text = withMessage
         
-        
-        if withTimer == true {
-            _ = NSTimer.scheduledTimerWithTimeInterval(2, target: self, selector: "stopAnimating:", userInfo: nil, repeats: false)
-        }
         
         theView.addSubview(self)
         
@@ -82,7 +83,7 @@ public class ActivityIndication: UIVisualEffectView {
         
     }
     
-    public func stopAnimating(sender: AnyObject){
+    public func stopAnimating(){
         self.removeFromSuperview()
         //UIApplication.sharedApplication().endIgnoringInteractionEvents()
         
@@ -96,30 +97,43 @@ public class ActivityIndication: UIVisualEffectView {
         
         var arrayOfConstraints: [NSLayoutConstraint] = [NSLayoutConstraint]()
         
-        var verticalConstraints: [NSLayoutConstraint]?
-        
-        var horizontalConstraints: [NSLayoutConstraint]?
-        
         if coverEntireView == true {
-            verticalConstraints = NSLayoutConstraint.constraintsWithVisualFormat("V:|[me]|", options: [], metrics: nil, views: otherViews)
-            horizontalConstraints = NSLayoutConstraint.constraintsWithVisualFormat("H:|[me]|", options: [], metrics: nil, views: otherViews)
-        }else{
-            let height = (mainView.frame.height / 2) * 0.65
-            let width = (mainView.frame.width / 2) * 0.25
+            let verticalConstraints = NSLayoutConstraint.constraintsWithVisualFormat("V:|[me]|", options: [], metrics: nil, views: otherViews)
+            let horizontalConstraints = NSLayoutConstraint.constraintsWithVisualFormat("H:|[me]|", options: [], metrics: nil, views: otherViews)
             
-            //print(height)
-            //print(width)
-            verticalConstraints = NSLayoutConstraint.constraintsWithVisualFormat("V:|-\(height)-[me]-\(height)-|", options: [], metrics: nil, views: otherViews)
-            horizontalConstraints = NSLayoutConstraint.constraintsWithVisualFormat("H:|-\(width)-[me]-\(width)-|", options: [], metrics: nil, views: otherViews)
+            for c in verticalConstraints {
+                arrayOfConstraints.append(c)
+            }
+            
+            for c in horizontalConstraints {
+                arrayOfConstraints.append(c)
+            }
+            
+        }else{
+            
+            let verticalConstraint = NSLayoutConstraint(item: mainView, attribute: NSLayoutAttribute.CenterY, relatedBy: NSLayoutRelation.Equal, toItem: self, attribute: NSLayoutAttribute.CenterY, multiplier: 1.0, constant: 0)
+            
+            let horizontalConstraint = NSLayoutConstraint(item: mainView, attribute: NSLayoutAttribute.CenterX, relatedBy: NSLayoutRelation.Equal, toItem: self, attribute: NSLayoutAttribute.CenterX, multiplier: 1.0, constant: 0)
+            
+            let heightConstraint = NSLayoutConstraint.constraintsWithVisualFormat("V:[me(>=150)]", options: [], metrics: nil, views: otherViews)
+            
+            let widthConstraints = NSLayoutConstraint.constraintsWithVisualFormat("H:[me(>=150)]", options: [], metrics: nil, views: otherViews)
+            
+            for c in heightConstraint {
+                arrayOfConstraints.append(c)
+            }
+            
+            for c in widthConstraints {
+                arrayOfConstraints.append(c)
+            }
+            
+            arrayOfConstraints.append(verticalConstraint)
+            arrayOfConstraints.append(horizontalConstraint)
         }
         
-        for c in verticalConstraints! {
-            arrayOfConstraints.append(c)
-        }
         
-        for c in horizontalConstraints! {
-            arrayOfConstraints.append(c)
-        }
+        
+        
         
         mainView.addConstraints(arrayOfConstraints)
         
@@ -147,13 +161,19 @@ public class ActivityIndication: UIVisualEffectView {
         
         let labelVerticalConstraints = NSLayoutConstraint.constraintsWithVisualFormat("V:|[label]-8-[Activity]", options: [], metrics: nil, views: otheViews)
         
-        let labelHorizontalConstraints = NSLayoutConstraint.constraintsWithVisualFormat("H:|[label]|", options: [], metrics: nil, views: otheViews)
+        let labelHorizontalConstraints = NSLayoutConstraint.constraintsWithVisualFormat("H:|-(>=0)-[label]-(>=0)-|", options: [], metrics: nil, views: otheViews)
+        
+        let labelWidthConstraint = NSLayoutConstraint.constraintsWithVisualFormat("H:[label(<=150)]", options: [], metrics: nil, views: otheViews)
         
         for c in labelVerticalConstraints{
             arrayOfConstraints.append(c)
         }
         
         for c in labelHorizontalConstraints{
+            arrayOfConstraints.append(c)
+        }
+        
+        for c in labelWidthConstraint {
             arrayOfConstraints.append(c)
         }
         
@@ -172,4 +192,8 @@ public class ActivityIndication: UIVisualEffectView {
         mainView.addConstraints(arrayOfConstraints)
         
     }
+    
+    
+    //End Class
 }
+
