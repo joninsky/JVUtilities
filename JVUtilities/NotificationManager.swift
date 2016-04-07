@@ -16,7 +16,7 @@
 
 import UIKit
 
-let debugKey = "Debug"
+public let debugKey = "Debug"
 
 public protocol NewNotificationDelegate {
     func gotNewNotification(theNotification: Notification)
@@ -24,7 +24,7 @@ public protocol NewNotificationDelegate {
 
 public class NotificaitonManager {
     //MARK: Shared instance
-    internal class var sharedInstance: NotificaitonManager {
+    public class var sharedInstance: NotificaitonManager {
         struct Static{
             static let instance: NotificaitonManager = NotificaitonManager()
         }
@@ -35,7 +35,7 @@ public class NotificaitonManager {
     
     let notificationArchiver = NotificationArchiver()
     
-    var notificationDelegate: NewNotificationDelegate?
+    public var notificationDelegate: NewNotificationDelegate?
     
     public var notifications = [Notification]()
     

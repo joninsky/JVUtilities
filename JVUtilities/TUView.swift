@@ -49,10 +49,10 @@ public class TUView: UICollectionViewController {
         self.setUpRelativeToView(self.collectionView!, otherViews: self.viewDictionary!)
         
         //Subscribe to interface Change Notifications
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "orientationChanged:", name: UIDeviceOrientationDidChangeNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(TUView.orientationChanged(_:)), name: UIDeviceOrientationDidChangeNotification, object: nil)
         
         //Set up gesture recognizer to dismiss the controller
-        self.dismissGesture = UITapGestureRecognizer(target: self, action: "dismiss:")
+        self.dismissGesture = UITapGestureRecognizer(target: self, action: #selector(TUView.dismiss(_:)))
         self.dismissGesture?.numberOfTapsRequired = 2
         self.collectionView!.addGestureRecognizer(self.dismissGesture!)
         
