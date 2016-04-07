@@ -13,6 +13,7 @@
 		C3AE8B441CB4E5160010D00D /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3AE8B431CB4E5160010D00D /* NotificationManager.swift */; };
 		C3AE8B461CB4E53A0010D00D /* NotificationArchiver.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3AE8B451CB4E53A0010D00D /* NotificationArchiver.swift */; };
 		C3AE8B491CB61D660010D00D /* ActivityIndication.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3AE8B481CB61D660010D00D /* ActivityIndication.swift */; };
+		C3AE8B4F1CB639EF0010D00D /* FlowerMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3AE8B4E1CB639EF0010D00D /* FlowerMenu.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		C3AE8B431CB4E5160010D00D /* NotificationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
 		C3AE8B451CB4E53A0010D00D /* NotificationArchiver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationArchiver.swift; sourceTree = "<group>"; };
 		C3AE8B481CB61D660010D00D /* ActivityIndication.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityIndication.swift; sourceTree = "<group>"; };
+		C3AE8B4E1CB639EF0010D00D /* FlowerMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlowerMenu.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,6 +58,7 @@
 		C3AE8B341CB4D4410010D00D /* JVUtilities */ = {
 			isa = PBXGroup;
 			children = (
+				C3AE8B4D1CB6399B0010D00D /* FlowerMenu */,
 				C3AE8B471CB4E5650010D00D /* ActivityUtilities */,
 				C3AE8B401CB4E4B20010D00D /* NotificationUtilities */,
 				C3AE8B3F1CB4E4A40010D00D /* LoginUtilities */,
@@ -89,6 +92,14 @@
 				C3AE8B481CB61D660010D00D /* ActivityIndication.swift */,
 			);
 			name = ActivityUtilities;
+			sourceTree = "<group>";
+		};
+		C3AE8B4D1CB6399B0010D00D /* FlowerMenu */ = {
+			isa = PBXGroup;
+			children = (
+				C3AE8B4E1CB639EF0010D00D /* FlowerMenu.swift */,
+			);
+			name = FlowerMenu;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -170,6 +181,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C3AE8B461CB4E53A0010D00D /* NotificationArchiver.swift in Sources */,
+				C3AE8B4F1CB639EF0010D00D /* FlowerMenu.swift in Sources */,
 				C3AE8B441CB4E5160010D00D /* NotificationManager.swift in Sources */,
 				C3AE8B421CB4E4C80010D00D /* Notification.swift in Sources */,
 				C3AE8B3E1CB4E4710010D00D /* LoginStringValidator.swift in Sources */,
