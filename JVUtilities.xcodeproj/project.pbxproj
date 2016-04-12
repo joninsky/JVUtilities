@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		C37337901CBC121800ACB737 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C373378F1CBC121800ACB737 /* Extensions.swift */; };
 		C37337921CBC125F00ACB737 /* Enumerations.swift in Sources */ = {isa = PBXBuildFile; fileRef = C37337911CBC125F00ACB737 /* Enumerations.swift */; };
+		C37337941CBD5F9000ACB737 /* Badger.swift in Sources */ = {isa = PBXBuildFile; fileRef = C37337931CBD5F9000ACB737 /* Badger.swift */; };
 		C39408A81CB6D625008F15B8 /* TUCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C39408A71CB6D625008F15B8 /* TUCell.swift */; };
 		C39408AA1CB6D634008F15B8 /* TUView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C39408A91CB6D634008F15B8 /* TUView.swift */; };
 		C3AE8B361CB4D4410010D00D /* JVUtilities.h in Headers */ = {isa = PBXBuildFile; fileRef = C3AE8B351CB4D4410010D00D /* JVUtilities.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -23,6 +24,7 @@
 /* Begin PBXFileReference section */
 		C373378F1CBC121800ACB737 /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		C37337911CBC125F00ACB737 /* Enumerations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Enumerations.swift; sourceTree = "<group>"; };
+		C37337931CBD5F9000ACB737 /* Badger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Badger.swift; sourceTree = "<group>"; };
 		C39408A71CB6D625008F15B8 /* TUCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TUCell.swift; sourceTree = "<group>"; };
 		C39408A91CB6D634008F15B8 /* TUView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TUView.swift; sourceTree = "<group>"; };
 		C3AE8B321CB4D4410010D00D /* JVUtilities.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = JVUtilities.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -102,6 +104,7 @@
 				C3AE8B411CB4E4C80010D00D /* Notification.swift */,
 				C3AE8B431CB4E5160010D00D /* NotificationManager.swift */,
 				C3AE8B451CB4E53A0010D00D /* NotificationArchiver.swift */,
+				C37337931CBD5F9000ACB737 /* Badger.swift */,
 			);
 			name = NotificationUtilities;
 			sourceTree = "<group>";
@@ -205,6 +208,7 @@
 				C3AE8B4F1CB639EF0010D00D /* FlowerMenu.swift in Sources */,
 				C37337921CBC125F00ACB737 /* Enumerations.swift in Sources */,
 				C3AE8B441CB4E5160010D00D /* NotificationManager.swift in Sources */,
+				C37337941CBD5F9000ACB737 /* Badger.swift in Sources */,
 				C39408AA1CB6D634008F15B8 /* TUView.swift in Sources */,
 				C3AE8B421CB4E4C80010D00D /* Notification.swift in Sources */,
 				C3AE8B3E1CB4E4710010D00D /* LoginStringValidator.swift in Sources */,
