@@ -41,6 +41,8 @@ public class NotificaitonManager {
     
     public var tabBarItemToUpdate: UITabBarItem?
     
+    
+    
     //MARK: Init
     
     init(){
@@ -74,7 +76,7 @@ public class NotificaitonManager {
     
     public func refreshTabBarItem() {
         if UIApplication.sharedApplication().applicationIconBadgeNumber == 0 {
-            self.tabBarItemToUpdate?.badgeValue = nil
+            self.tabBarItemToUpdate?.badgeValue = ""
         }else{
             self.tabBarItemToUpdate?.badgeValue = "\(UIApplication.sharedApplication().applicationIconBadgeNumber)"
         }
