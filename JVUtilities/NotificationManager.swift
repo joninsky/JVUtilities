@@ -39,14 +39,20 @@ public class NotificaitonManager {
     
     public var notifications = [Notification]()
     
-    public var tabBarItemToUpdate: UITabBarItem?
+    public var viewToBadge: AnyObject? {
+        didSet{
+            if self.badgeView == nil {
+                //self.badgeView = Badger(badgeColor: nil, textColor: nil, viewToBadge: self.viewToBadge!, initialValue: "")
+            }
+        }
+    }
     
-    
+    private var badgeView: Badger?
     
     //MARK: Init
     
     init(){
-        
+
         self.notifications = notificationArchiver.getNotifications()
         
     }
@@ -76,9 +82,38 @@ public class NotificaitonManager {
     
     public func refreshTabBarItem() {
         if UIApplication.sharedApplication().applicationIconBadgeNumber == 0 {
-            self.tabBarItemToUpdate?.badgeValue = ""
+            
+            switch self.viewToBadge {
+            case is UITabBarItem:
+                guard let tabBar = self.viewToBadge as? UITabBarItem else{
+                    return
+                }
+                
+                tabBar.badgeValue = ""
+            case is UIView:
+//                guard let view = self.viewToBadge as? UIView else{
+//                    return
+//                }
+                print("Is UIView")
+            default:
+                return
+            }
+            
+            
+            if self.viewToBadge is UITabBarItem {
+
+            }
+
         }else{
-            self.tabBarItemToUpdate?.badgeValue = "\(UIApplication.sharedApplication().applicationIconBadgeNumber)"
+            
+            if self.viewToBadge is UITabBarItem {
+                guard let tabBar = self.viewToBadge as? UITabBarItem else{
+                    return
+                }
+                
+                tabBar.badgeValue = "\(UIApplication.sharedApplication().applicationIconBadgeNumber)"
+            }
+
         }
         
     }

@@ -72,13 +72,6 @@ public class Badger: UILabel {
         fatalError("init(coder:) has not been implemented")
     }
     
-//    public override func drawRect(rect: CGRect) {
-//        
-//        let newRect = UIEdgeInsetsMake(0, 5, 0, 5)
-//        
-//        super.drawTextInRect(UIEdgeInsetsInsetRect(rect, newRect))
-//    }
-    
     private func constrain(superView: UIView) {
         
         var arrayOfConstraints = [NSLayoutConstraint]()
