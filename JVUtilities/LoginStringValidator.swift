@@ -13,7 +13,9 @@ public class LoginStringValidator {
     
     let emailRegex = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}"
     
-    let passwordRegex = "^(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9].*[0-9])(?=.*[a-z].*[a-z].*[a-z]).{8}$"
+    //let passwordRegex = "^(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9].*[0-9])(?=.*[a-z].*[a-z].*[a-z]).{8}$"
+    
+    let passwordRegex = "^(?=.*[A-Z])(?=.*[0-9].*[0-9])(?=.*[a-z].*[a-z].*[a-z]).{8}$"
     
     var emailPredicate: NSPredicate!
     
@@ -51,10 +53,10 @@ public class LoginStringValidator {
         }
         
         let colorAnimation = CABasicAnimation(keyPath: "borderColor")
-        colorAnimation.fromValue = UIColor.redColor().CGColor
+        colorAnimation.fromValue = UIColor(red: 168/255, green: 17/255, blue: 0/255, alpha: 1.0).CGColor
         colorAnimation.toValue = UIColor.blackColor().CGColor
         let widthAnimation = CABasicAnimation(keyPath: "borderWidth")
-        widthAnimation.fromValue = 1.0
+        widthAnimation.fromValue = 3.0
         widthAnimation.toValue = 0.0
         
         let animationGroup = CAAnimationGroup()
