@@ -18,6 +18,7 @@ public class Notification: NSObject, NSCoding {
     public var subPhoto: Int?
     public var seen: Bool!
     public var debug: Bool!
+    public var screenedNotification: Bool!
     public var info: [String: String]?
     
     public override init() {
@@ -26,7 +27,7 @@ public class Notification: NSObject, NSCoding {
         self.date = NSDate()
         self.seen = false
         self.debug = false
-        
+        self.screenedNotification = false
     }
     
     //MARK: NSCoding Compliance
@@ -54,6 +55,8 @@ public class Notification: NSObject, NSCoding {
         
         self.debug = aDecoder.decodeBoolForKey("debug")
         
+        self.screenedNotification = aDecoder.decodeBoolForKey("Screened")
+        
         if let retrievedInfo = aDecoder.decodeObjectForKey("Info") as? [String:String] {
             self.info = retrievedInfo
         }
@@ -70,6 +73,7 @@ public class Notification: NSObject, NSCoding {
         }
         aCoder.encodeBool(self.seen, forKey: "seen")
         aCoder.encodeBool(self.debug, forKey: "debug")
+        aCoder.encodeBool(self.screenedNotification, forKey: "Screened")
         aCoder.encodeObject(self.info, forKey: "Info")
     }
 }
