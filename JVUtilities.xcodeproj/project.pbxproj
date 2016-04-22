@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C343C9471CCA7BD700C4467C /* FlowerMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = C343C9461CCA7BD700C4467C /* FlowerMenu.swift */; };
+		C345D42B1CC2E2B60059E3AF /* FlowerMenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C345D42A1CC2E2B60059E3AF /* FlowerMenuController.swift */; };
+		C345D42F1CC2E2D60059E3AF /* Segues.swift in Sources */ = {isa = PBXBuildFile; fileRef = C345D42E1CC2E2D60059E3AF /* Segues.swift */; };
 		C37337901CBC121800ACB737 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C373378F1CBC121800ACB737 /* Extensions.swift */; };
 		C37337921CBC125F00ACB737 /* Enumerations.swift in Sources */ = {isa = PBXBuildFile; fileRef = C37337911CBC125F00ACB737 /* Enumerations.swift */; };
 		C37337961CBD863900ACB737 /* Badger.swift in Sources */ = {isa = PBXBuildFile; fileRef = C37337951CBD863900ACB737 /* Badger.swift */; };
@@ -18,10 +21,12 @@
 		C3AE8B441CB4E5160010D00D /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3AE8B431CB4E5160010D00D /* NotificationManager.swift */; };
 		C3AE8B461CB4E53A0010D00D /* NotificationArchiver.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3AE8B451CB4E53A0010D00D /* NotificationArchiver.swift */; };
 		C3AE8B491CB61D660010D00D /* ActivityIndication.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3AE8B481CB61D660010D00D /* ActivityIndication.swift */; };
-		C3AE8B4F1CB639EF0010D00D /* FlowerMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3AE8B4E1CB639EF0010D00D /* FlowerMenu.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		C343C9461CCA7BD700C4467C /* FlowerMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlowerMenu.swift; sourceTree = "<group>"; };
+		C345D42A1CC2E2B60059E3AF /* FlowerMenuController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlowerMenuController.swift; sourceTree = "<group>"; };
+		C345D42E1CC2E2D60059E3AF /* Segues.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Segues.swift; sourceTree = "<group>"; };
 		C373378F1CBC121800ACB737 /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		C37337911CBC125F00ACB737 /* Enumerations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Enumerations.swift; sourceTree = "<group>"; };
 		C37337951CBD863900ACB737 /* Badger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Badger.swift; sourceTree = "<group>"; };
@@ -35,7 +40,6 @@
 		C3AE8B431CB4E5160010D00D /* NotificationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
 		C3AE8B451CB4E53A0010D00D /* NotificationArchiver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationArchiver.swift; sourceTree = "<group>"; };
 		C3AE8B481CB61D660010D00D /* ActivityIndication.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityIndication.swift; sourceTree = "<group>"; };
-		C3AE8B4E1CB639EF0010D00D /* FlowerMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlowerMenu.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -120,7 +124,9 @@
 		C3AE8B4D1CB6399B0010D00D /* FlowerMenu */ = {
 			isa = PBXGroup;
 			children = (
-				C3AE8B4E1CB639EF0010D00D /* FlowerMenu.swift */,
+				C345D42A1CC2E2B60059E3AF /* FlowerMenuController.swift */,
+				C345D42E1CC2E2D60059E3AF /* Segues.swift */,
+				C343C9461CCA7BD700C4467C /* FlowerMenu.swift */,
 			);
 			name = FlowerMenu;
 			sourceTree = "<group>";
@@ -204,8 +210,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				C3AE8B461CB4E53A0010D00D /* NotificationArchiver.swift in Sources */,
+				C343C9471CCA7BD700C4467C /* FlowerMenu.swift in Sources */,
+				C345D42B1CC2E2B60059E3AF /* FlowerMenuController.swift in Sources */,
+				C345D42F1CC2E2D60059E3AF /* Segues.swift in Sources */,
 				C37337901CBC121800ACB737 /* Extensions.swift in Sources */,
-				C3AE8B4F1CB639EF0010D00D /* FlowerMenu.swift in Sources */,
 				C37337921CBC125F00ACB737 /* Enumerations.swift in Sources */,
 				C3AE8B441CB4E5160010D00D /* NotificationManager.swift in Sources */,
 				C37337961CBD863900ACB737 /* Badger.swift in Sources */,
