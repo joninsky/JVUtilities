@@ -24,11 +24,13 @@ public protocol NewNotificationDelegate {
     func gotNewNotification(theNotification: Notification)
 }
 
-public class NotificaitonManager {
+
+//NotificaitonManager
+public class NotificationManager {
     //MARK: Shared instance
-    public class var sharedInstance: NotificaitonManager {
+    public class var sharedInstance: NotificationManager {
         struct Static{
-            static let instance: NotificaitonManager = NotificaitonManager()
+            static let instance: NotificationManager = NotificationManager()
         }
         return Static.instance
     }
