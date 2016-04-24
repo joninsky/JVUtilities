@@ -24,7 +24,7 @@ public enum Position {
     case Center
 }
 
-public class FlowerMenu: UIImageView {
+public class FlowerMenu: UIImageView, UIGestureRecognizerDelegate {
     
     //MARK: Public Variables
     public var centerView: UIView!
@@ -37,6 +37,7 @@ public class FlowerMenu: UIImageView {
     public var stagger: NSTimeInterval!
     public var menuIsExpanded: Bool = false
     public var delegate: FlowerMenuDelegate?
+    public var showPedalLabels = false
     public var currentPosition: Position! {
         didSet{
             self.constrainToPosition(self.currentPosition, animate: true)
@@ -48,28 +49,20 @@ public class FlowerMenu: UIImageView {
     var theSuperView: UIView!
     
     //MARK: Init functions
-    public init(withPosition: Position, andSuperView view: UIView){
-        super.init(image: nil)
+    public init(withPosition: Position, andSuperView view: UIView, andImage: UIImage?){
+        super.init(image: andImage)
         self.translatesAutoresizingMaskIntoConstraints = false
         self.userInteractionEnabled = true
         self.theSuperView = view
         self.theSuperView?.addSubview(self)
-        
         self.constrainToPosition(withPosition, animate: false)
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(FlowerMenu.didTapCenterView(_:)))
         self.addGestureRecognizer(tapGesture)
         self.currentPosition = withPosition
         self.pedalDistance = 100
         self.pedalSpace = 50
-        self.startAngle = 75
         self.stagger = 0.06
         self.growthDuration = 0.4
-        self.backgroundColor = UIColor.greenColor()
-        print(self.bounds)
-        print(self.frame)
-        
-        print(self.theSuperView.bounds)
-        print(self.theSuperView.frame)
     }
     
     required public init?(coder aDecoder: NSCoder) {
@@ -78,30 +71,37 @@ public class FlowerMenu: UIImageView {
     }
     
     //MARK: Public functions
-    public func addPedal(theView: UIView, identifier: String){
-        if theView is UIImageView {
-            theView.userInteractionEnabled = true
-        }
+    public func addPedal(theImage: UIImage, identifier: String){
         
-        theView.translatesAutoresizingMaskIntoConstraints = false
-        theView.frame = CGRectMake(0, 0, 50, 50)
-        self.theSuperView.addSubview(theView)
-        //self.addHeightAndWidthToPedal(theView)
-        self.theSuperView.sendSubviewToBack(theView)
-        theView.layer.cornerRadius = theView.bounds.height / 2
-        self.pedals.append(theView)
-        self.pedalIDs[identifier] = theView
+        let newPedal = self.createAndConstrainPedal(theImage, name: identifier)
+        
+        self.addSubview(newPedal)
+        self.constrainPedal(newPedal)
+        newPedal.center = CGPointMake(self.bounds.origin.x + self.bounds.size.width / 2, self.bounds.origin.y + self.bounds.size.height / 2)
+        self.pedals.append(newPedal)
+        self.pedalIDs[identifier] = newPedal
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(FlowerMenu.didTapPopOutView(_:)))
-        theView.addGestureRecognizer(tapGesture)
+        tapGesture.delegate = self
+        newPedal.addGestureRecognizer(tapGesture)
         let panGesture = UIPanGestureRecognizer(target: self, action: #selector(FlowerMenu.pannedViews(_:)))
-        theView.addGestureRecognizer(panGesture)
-        theView.alpha = 0
-        
-        theView.center = CGPointMake(self.bounds.origin.x + self.bounds.size.width / 2, self.bounds.origin.y + self.bounds.size.height / 2)
+        newPedal.addGestureRecognizer(panGesture)
+        newPedal.alpha = 0
     }
     
     public func getPedalFromIdentifier(identifier: String) -> UIView {
         return UIView()
+    }
+    
+    public override func pointInside(point: CGPoint, withEvent event: UIEvent?) -> Bool {
+        if CGRectContainsPoint(self.bounds, point) {
+            return true
+        }
+        for view in self.pedals {
+            if CGRectContainsPoint(view.frame, point) {
+                return true
+            }
+        }
+        return false
     }
     
     public func grow(){
@@ -133,6 +133,11 @@ public class FlowerMenu: UIImageView {
             })
         }
         self.menuIsExpanded = false
+    }
+    
+    public func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
+        print("Gesture")
+        return true
     }
     
     internal func didTapPopOutView(sender: UITapGestureRecognizer) {
@@ -169,30 +174,62 @@ public class FlowerMenu: UIImageView {
         return CGAffineTransformMakeTranslation(CGFloat(deltaX), CGFloat(deltaY))
     }
     
+    private func createAndConstrainPedal(image: UIImage, name: String) -> UIView {
+        
+        let newPedal = UIView()
+        let pedalImage = UIImageView(image: image)
+        let pedalLabel = UILabel()
+        
+        newPedal.translatesAutoresizingMaskIntoConstraints = false
+        pedalImage.translatesAutoresizingMaskIntoConstraints = false
+        newPedal.userInteractionEnabled = true
+        pedalLabel.userInteractionEnabled = true
+        pedalImage.userInteractionEnabled = true
+        pedalLabel.translatesAutoresizingMaskIntoConstraints = false
+        pedalLabel.numberOfLines = 1
+        if self.showPedalLabels == false {
+            pedalLabel.text = name
+            pedalLabel.hidden = true
+        }
+        pedalLabel.text = name
+        pedalLabel.adjustsFontSizeToFitWidth = true
+        
+        newPedal.addSubview(pedalImage)
+        newPedal.addSubview(pedalLabel)
+        
+        let dictionaryOfViews = ["image": pedalImage, "label": pedalLabel]
+        
+        self.constrainPedal(newPedal, pedalSubViews: dictionaryOfViews)
+        
+        return newPedal
+        
+    }
+    
     //MARK: Constraint Adding
     func constrainToPosition(thePosition: Position, animate: Bool) {
-        self.removeConstraints(self.constraints)
+        //self.removeConstraints(self.constraints)
         var arrayOfConstraints = [NSLayoutConstraint]()
         switch thePosition {
         case .Center:
             let verticalConstraint = NSLayoutConstraint(item: self, attribute: NSLayoutAttribute.CenterY, relatedBy: NSLayoutRelation.Equal, toItem: self.theSuperView, attribute: NSLayoutAttribute.CenterY, multiplier: 1.0, constant: 0)
-            
             let horizontalConstraint = NSLayoutConstraint(item: self, attribute: NSLayoutAttribute.CenterX, relatedBy: NSLayoutRelation.Equal, toItem: self.theSuperView, attribute: NSLayoutAttribute.CenterX, multiplier: 1.0, constant: 0)
-            
             arrayOfConstraints.append(verticalConstraint)
             arrayOfConstraints.append(horizontalConstraint)
+            self.startAngle = 0
             print("Constrain To Center")
         case .LowerLeft:
             let horizontalConstraints = NSLayoutConstraint.constraintsWithVisualFormat("H:|-28-[me]", options: [], metrics: nil, views: ["me": self])
             let verticalConstraints = NSLayoutConstraint.constraintsWithVisualFormat("V:[me]-28-|", options: [], metrics: nil, views: ["me":self])
             arrayOfConstraints.appendContentsOf(horizontalConstraints)
             arrayOfConstraints.appendContentsOf(verticalConstraints)
+            self.startAngle = 0
             print("Constrain To Lower Left")
         case .LowerRight:
             let horizontalConstraints = NSLayoutConstraint.constraintsWithVisualFormat("H:[me]-28-|", options: [], metrics: nil, views: ["me": self])
             let verticalConstraints = NSLayoutConstraint.constraintsWithVisualFormat("V:[me]-28-|", options: [], metrics: nil, views: ["me":self])
             arrayOfConstraints.appendContentsOf(horizontalConstraints)
             arrayOfConstraints.appendContentsOf(verticalConstraints)
+            self.startAngle = -90
             print("Constrain To Lower Right")
         case .UpperLeft:
             let horizontalConstraints = NSLayoutConstraint.constraintsWithVisualFormat("H:|-28-[me]", options: [], metrics: nil, views: ["me": self])
@@ -200,13 +237,20 @@ public class FlowerMenu: UIImageView {
             arrayOfConstraints.appendContentsOf(horizontalConstraints)
             arrayOfConstraints.appendContentsOf(verticalConstraints)
             print("Constrain To Upper Left")
+            self.startAngle = 90
         case .UpperRight:
             let horizontalConstraints = NSLayoutConstraint.constraintsWithVisualFormat("H:[me]-28-|", options: [], metrics: nil, views: ["me": self])
             let verticalConstraints = NSLayoutConstraint.constraintsWithVisualFormat("V:|-28-[me]", options: [], metrics: nil, views: ["me":self])
             arrayOfConstraints.appendContentsOf(horizontalConstraints)
             arrayOfConstraints.appendContentsOf(verticalConstraints)
+            self.startAngle = 180
             print("Constrain To Upper Right")
         }
+        
+        let width = NSLayoutConstraint(item: self, attribute: NSLayoutAttribute.Width, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.Width, multiplier: 1.0, constant: 50)
+        let height = NSLayoutConstraint(item: self, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.Height, multiplier: 1.0, constant: 50)
+        arrayOfConstraints.append(width)
+        arrayOfConstraints.append(height)
         
         self.theSuperView.addConstraints(arrayOfConstraints)
         self.setNeedsLayout()
@@ -218,32 +262,49 @@ public class FlowerMenu: UIImageView {
         }else{
             self.layoutIfNeeded()
         }
-        
-        print(self.bounds)
-        print(self.frame)
-        
-        print(self.theSuperView.bounds)
-        print(self.theSuperView.frame)
     }
     
-    private func addHeightAndWidthToPedal(thePedal: UIView) {
+    private func constrainPedal(thePedal: UIView, pedalSubViews: [String: AnyObject]){
+        
+        var arrayOfConstraint = [NSLayoutConstraint]()
+        
+        let imageLabelVertical = NSLayoutConstraint.constraintsWithVisualFormat("V:|[image][label]|", options: [], metrics: nil, views: pedalSubViews)
+        
+        let imageHorizontal = NSLayoutConstraint.constraintsWithVisualFormat("H:|-(>=0)-[image]-(>=0)-|", options: [], metrics: nil, views: pedalSubViews)
+
+        guard let theImage = pedalSubViews["image"] as? UIImageView, let label = pedalSubViews["label"] as? UILabel else {
+            return
+        }
+        
+        if self.showPedalLabels == false {
+            let labeHeight = NSLayoutConstraint(item: label, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.Height, multiplier: 1.0, constant: 0)
+            arrayOfConstraint.append(labeHeight)
+        }
+
+        let moreImageHorizontal = NSLayoutConstraint(item: theImage, attribute: NSLayoutAttribute.CenterX, relatedBy: NSLayoutRelation.Equal, toItem: thePedal, attribute: NSLayoutAttribute.CenterX, multiplier: 1.0, constant: 0)
+        
+        let labelHorizontal = NSLayoutConstraint.constraintsWithVisualFormat("H:|[label]|", options: [], metrics: nil, views: pedalSubViews)
+        
+        arrayOfConstraint.appendContentsOf(imageLabelVertical)
+        arrayOfConstraint.appendContentsOf(imageHorizontal)
+        arrayOfConstraint.append(moreImageHorizontal)
+        arrayOfConstraint.appendContentsOf(labelHorizontal)
+        thePedal.addConstraints(arrayOfConstraint)
+    }
+    
+    private func constrainPedal(thePedal: UIView) {
         
         var arrayOfConstraints = [NSLayoutConstraint]()
         
         
-        let width = NSLayoutConstraint.constraintsWithVisualFormat("H:[view(50)]", options: [], metrics: nil, views: ["view":thePedal])
-        let height = NSLayoutConstraint.constraintsWithVisualFormat("V:[view(50)]", options: [], metrics: nil, views: ["view":thePedal])
-        //        let horizontalConstraints = NSLayoutConstraint.constraintsWithVisualFormat("H:|[view]|", options: [], metrics: nil, views: ["view":thePedal])
-        //        let verticalConstraints = NSLayoutConstraint.constraintsWithVisualFormat("V:|[view]|", options: [], metrics: nil, views: ["view":thePedal])
-        //        arrayOfConstraints.appendContentsOf(horizontalConstraints)
-        //        arrayOfConstraints.appendContentsOf(verticalConstraints)
-        arrayOfConstraints.appendContentsOf(width)
-        arrayOfConstraints.appendContentsOf(height)
+        let centerX = NSLayoutConstraint(item: thePedal, attribute: NSLayoutAttribute.CenterX, relatedBy: NSLayoutRelation.Equal, toItem: self, attribute: NSLayoutAttribute.CenterX, multiplier: 1.0, constant: 0)
         
-        self.theSuperView.addConstraints(constraints)
+        let centerY = NSLayoutConstraint(item: thePedal, attribute: NSLayoutAttribute.CenterY, relatedBy: NSLayoutRelation.Equal, toItem: self, attribute: NSLayoutAttribute.CenterY, multiplier: 1.0, constant: 0)
         
-        self.setNeedsLayout()
-        self.layoutIfNeeded()
+        arrayOfConstraints.append(centerX)
+        arrayOfConstraints.append(centerY)
+        
+        self.addConstraints(arrayOfConstraints)
         
     }
     
