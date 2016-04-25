@@ -30,6 +30,17 @@ public class Notification: NSObject, NSCoding {
         self.screenedNotification = false
     }
     
+    //MARK: Functions
+    public func addMainPhoto(thePhoto: UIImage) {
+        let scale = 52 / thePhoto.size.height
+        let newWidth = thePhoto.size.width * scale
+        UIGraphicsBeginImageContext(CGSizeMake(newWidth, 52))
+        thePhoto.drawInRect(CGRectMake(0, 0, newWidth, 52))
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        self.photo = newImage
+    }
+    
     //MARK: NSCoding Compliance
     public required init?(coder aDecoder: NSCoder) {
         

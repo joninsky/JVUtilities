@@ -18,7 +18,7 @@ public class Badger: UILabel {
         
         didSet{
             self.text = badgeValue
-            if self.badgeValue.isEmpty {
+            if self.badgeValue.isEmpty || self.badgeValue == "0"{
                 self.hidden = true
             }else{
                 self.hidden = false
@@ -58,7 +58,7 @@ public class Badger: UILabel {
         if value != nil {
             self.badgeValue = value!
             self.text = value
-            if self.text!.isEmpty == true {
+            if self.text!.isEmpty == true || self.badgeValue == "0"{
                 self.hidden = true
             }
         }else{
