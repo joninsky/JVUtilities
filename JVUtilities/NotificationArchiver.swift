@@ -25,8 +25,6 @@ internal class NotificationArchiver: NSObject {
         if fileChecker.fileExistsAtPath(self.pathToNotificationFile) == false {
             print("Creating notification file")
             fileChecker.createFileAtPath(self.pathToNotificationFile, contents: nil, attributes: nil)
-        }else{
-            print("Notification file already exists")
         }
     }
     
