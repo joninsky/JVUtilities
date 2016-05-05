@@ -12,7 +12,7 @@ DESC
 s.homepage = "https://github.com/joninsky/JVUtilities"
 s.license = 'MIT'
 s.author = { "Jon Vogel" => "joninsky@gmail.com" }
-s.source = { :git => "https://github.com/joninsky/JVUtilities.git", :tag => s.version.to_s" }
+s.source = { :git => "https://github.com/joninsky/JVUtilities.git", :tag => s.version.to_s}
 
 s.platform = :ios
 s.requires_arc = true
