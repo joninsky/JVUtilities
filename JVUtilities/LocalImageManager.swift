@@ -8,7 +8,7 @@
 
 import UIKit
 
-public class LocalImageManager {
+internal class ImageManager {
     //MARK: Properties
     
     let fileManager = NSFileManager.defaultManager()
@@ -41,23 +41,23 @@ public class LocalImageManager {
         
         let fileURL = folderURL.URLByAppendingPathComponent(file)
         
-        if fileURL.checkPromisedItemIsReachableAndReturnError(nil) == true {
-            do {
-                try self.fileManager.createDirectoryAtURL(folderURL, withIntermediateDirectories: true, attributes: nil)
-            }catch{
-                completion(fileURL: nil)
-                return
-            }
-            
-            do {
-                try imageData.writeToURL(fileURL, options: NSDataWritingOptions.AtomicWrite)
-                completion(fileURL: fileURL)
-            }catch {
-             completion(fileURL: nil)
-            }
-        }else{
+        //if fileURL.checkPromisedItemIsReachableAndReturnError(nil) == true {
+        do {
+            try self.fileManager.createDirectoryAtURL(folderURL, withIntermediateDirectories: true, attributes: nil)
+        }catch{
+            completion(fileURL: nil)
+            return
+        }
+        
+        do {
+            try imageData.writeToURL(fileURL, options: NSDataWritingOptions.AtomicWrite)
+            completion(fileURL: fileURL)
+        }catch {
             completion(fileURL: nil)
         }
+        // }else{
+        //    completion(fileURL: nil)
+        //}
     }
     
     public func getImageFromFile(fileName: String, fileExtension: String, completion:(theImage: UIImage?) -> Void) {
@@ -142,5 +142,5 @@ public class LocalImageManager {
     }
     
     
-//MARK: End Class
+    //MARK: End Class
 }
