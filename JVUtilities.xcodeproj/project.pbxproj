@@ -13,6 +13,7 @@
 		C37337901CBC121800ACB737 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C373378F1CBC121800ACB737 /* Extensions.swift */; };
 		C37337921CBC125F00ACB737 /* Enumerations.swift in Sources */ = {isa = PBXBuildFile; fileRef = C37337911CBC125F00ACB737 /* Enumerations.swift */; };
 		C37337961CBD863900ACB737 /* Badger.swift in Sources */ = {isa = PBXBuildFile; fileRef = C37337951CBD863900ACB737 /* Badger.swift */; };
+		C391CA261CDB235F003207C9 /* LocalImageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C391CA251CDB235F003207C9 /* LocalImageManager.swift */; };
 		C39408A81CB6D625008F15B8 /* TUCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C39408A71CB6D625008F15B8 /* TUCell.swift */; };
 		C39408AA1CB6D634008F15B8 /* TUView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C39408A91CB6D634008F15B8 /* TUView.swift */; };
 		C3AE8B361CB4D4410010D00D /* JVUtilities.h in Headers */ = {isa = PBXBuildFile; fileRef = C3AE8B351CB4D4410010D00D /* JVUtilities.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -30,6 +31,7 @@
 		C373378F1CBC121800ACB737 /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		C37337911CBC125F00ACB737 /* Enumerations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Enumerations.swift; sourceTree = "<group>"; };
 		C37337951CBD863900ACB737 /* Badger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Badger.swift; sourceTree = "<group>"; };
+		C391CA251CDB235F003207C9 /* LocalImageManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalImageManager.swift; sourceTree = "<group>"; };
 		C39408A71CB6D625008F15B8 /* TUCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TUCell.swift; sourceTree = "<group>"; };
 		C39408A91CB6D634008F15B8 /* TUView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TUView.swift; sourceTree = "<group>"; };
 		C3AE8B321CB4D4410010D00D /* JVUtilities.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = JVUtilities.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -90,6 +92,7 @@
 				C3AE8B371CB4D4410010D00D /* Info.plist */,
 				C373378F1CBC121800ACB737 /* Extensions.swift */,
 				C37337911CBC125F00ACB737 /* Enumerations.swift */,
+				C391CA251CDB235F003207C9 /* LocalImageManager.swift */,
 			);
 			path = JVUtilities;
 			sourceTree = "<group>";
@@ -220,6 +223,7 @@
 				C39408AA1CB6D634008F15B8 /* TUView.swift in Sources */,
 				C3AE8B421CB4E4C80010D00D /* Notification.swift in Sources */,
 				C3AE8B3E1CB4E4710010D00D /* LoginStringValidator.swift in Sources */,
+				C391CA261CDB235F003207C9 /* LocalImageManager.swift in Sources */,
 				C39408A81CB6D625008F15B8 /* TUCell.swift in Sources */,
 				C3AE8B491CB61D660010D00D /* ActivityIndication.swift in Sources */,
 			);

@@ -24,30 +24,15 @@ public class FMViewControler: UIViewController, UIViewControllerTransitioningDel
     
     public private(set) var flowerMenu: FlowerMenu!
     public var viewControllers = [UIViewController]()
-    
+    public var pedalImages = [UIImage]()
+    public var pedalNames = [String]()
     
     //MARK: Lifecycle Functions
     public override func viewDidLoad() {
         super.viewDidLoad()
         
-        guard let menuImage = UIImage(named: "MenuIconGood") else {
-            return
-        }
-        
-        self.flowerMenu = FlowerMenu(withPosition: .UpperRight, andSuperView: self.view, andImage: menuImage)
-        self.flowerMenu.showPedalLabels = true
-        self.flowerMenu.delegate = self
-        
-        guard let messageImage = UIImage(named: "Messages"), let notificationImage = UIImage(named: "Notifications"), let profileImage = UIImage(named: "Profile") else {
-            return
-        }
-        
-//        self.flowerMenu.addPedal(messageImage, identifier: "Messages")
-//        self.flowerMenu.addPedal(notificationImage, identifier: "Notifications")
-//        self.flowerMenu.addPedal(profileImage, identifier: "Profile")
-        
-        
-        
+
+    
     }
     
     
@@ -64,11 +49,24 @@ public class FMViewControler: UIViewController, UIViewControllerTransitioningDel
     //MARK: Custom Functions
     
     public func addViewController(viewController: UIViewController, withPedalImage image: UIImage, withPedalTitle title: String){
+        if self.flowerMenu == nil {
+            guard let menuImage = UIImage(named: "MenuIconGood") else {
+                return
+            }
+            
+            self.flowerMenu = FlowerMenu(withPosition: .UpperRight, andSuperView: self.view, andImage: menuImage)
+            self.flowerMenu.showPedalLabels = true
+            self.flowerMenu.delegate = self
+        }
         
-        //self.flowerMenu.addPedal(image, identifier: title)
-        
-        self.addChildViewController(viewController)
-        
+        self.viewControllers.append(viewController)
+        self.pedalImages.append(image)
+        self.pedalNames.append(title)
+        self.flowerMenu.addPedal(image, identifier: title)
+        if self.viewControllers.count == 1 {
+            self.addChildViewController(self.viewControllers[0])
+
+        }
     }
     
     //MARK: Flower Menu Delegate Functions
@@ -76,9 +74,23 @@ public class FMViewControler: UIViewController, UIViewControllerTransitioningDel
         
         print("Touched pedal named: " + identifier )
         
+        guard let oneController = self.childViewControllers.first else {
+            return
+        }
         
+        oneController.willMoveToParentViewController(nil)
         
+        oneController.view.removeFromSuperview()
         
+        oneController.removeFromParentViewController()
+        
+        for (index, title) in self.pedalNames.enumerate() {
+            if title == identifier {
+                self.addChildViewController(self.viewControllers[index])
+            }
+        }
+        
+        self.flowerMenu.shrivel()
         
     }
     public func flowerMenuDidExpand(){
@@ -92,15 +104,16 @@ public class FMViewControler: UIViewController, UIViewControllerTransitioningDel
     //MARK: Container Functions
     public override func addChildViewController(childController: UIViewController) {
         
+        super.addChildViewController(childController)
         print("Add Child View Called")
         
         childController.view.frame = self.view.frame
-
+        
         self.view.insertSubview(childController.view, atIndex: 0)
         
         childController.didMoveToParentViewController(self)
+        
     }
-    
     
     public override func removeFromParentViewController() {
         

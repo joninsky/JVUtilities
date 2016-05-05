@@ -51,8 +51,6 @@ public class FlowerMenu: UIImageView {
         super.init(image: andImage)
         self.translatesAutoresizingMaskIntoConstraints = false
         self.userInteractionEnabled = true
-        //self.theSuperView = view
-        //self.superview?.addSubview(self)
         view.addSubview(self)
         self.constrainToPosition(withPosition, animate: false)
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(FlowerMenu.didTapCenterView(_:)))
@@ -77,6 +75,19 @@ public class FlowerMenu: UIImageView {
         let panGesture = UIPanGestureRecognizer(target: self, action: #selector(FlowerMenu.pannedViews(_:)))
         newPedal.addGestureRecognizer(panGesture)
         newPedal.alpha = 0
+    }
+    
+    public func selectPedalWithID(identifier: String) {
+        for key in self.pedalIDs.keys {
+            if key == identifier {
+                
+                guard let view = self.pedalIDs[key] else{
+                    return
+                }
+                
+                self.delegate?.flowerMenuDidSelectPedalWithID(self, identifier: key, pedal: view)
+            }
+        }
     }
     
     public func getPedalFromIdentifier(identifier: String) -> UIView {
@@ -278,10 +289,10 @@ public class FlowerMenu: UIImageView {
             print("Constrain To Upper Right")
         }
         
-        let width = NSLayoutConstraint(item: self, attribute: NSLayoutAttribute.Width, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.Width, multiplier: 1.0, constant: 50)
-        let height = NSLayoutConstraint(item: self, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.Height, multiplier: 1.0, constant: 50)
-        arrayOfConstraints.append(width)
-        arrayOfConstraints.append(height)
+//        let width = NSLayoutConstraint(item: self, attribute: NSLayoutAttribute.Width, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.Width, multiplier: 1.0, constant: 50)
+//        let height = NSLayoutConstraint(item: self, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.Height, multiplier: 1.0, constant: 50)
+//        arrayOfConstraints.append(width)
+//        arrayOfConstraints.append(height)
         
         self.superview?.addConstraints(arrayOfConstraints)
         self.setNeedsLayout()
