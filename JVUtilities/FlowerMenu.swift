@@ -50,7 +50,7 @@ public class FlowerMenu: UIImageView {
     public init(withPosition: Position, andSuperView view: UIView, andImage: UIImage?){
         super.init(image: andImage)
         self.translatesAutoresizingMaskIntoConstraints = false
-        self.userInteractionEnabled = true
+        self.userInteractionEnabled = true        
         view.addSubview(self)
         self.constrainToPosition(withPosition, animate: false)
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(FlowerMenu.didTapCenterView(_:)))
@@ -146,8 +146,10 @@ public class FlowerMenu: UIImageView {
     internal func didTapCenterView(sender: UITapGestureRecognizer){
         if self.menuIsExpanded {
             self.shrivel()
+            //self.currentPosition = .UpperRight
         }else{
             self.grow()
+            //self.currentPosition = .Center
         }
     }
     
@@ -249,7 +251,6 @@ public class FlowerMenu: UIImageView {
     
     //MARK: Constraint Adding
     func constrainToPosition(thePosition: Position, animate: Bool) {
-        //self.removeConstraints(self.constraints)
         var arrayOfConstraints = [NSLayoutConstraint]()
         switch thePosition {
         case .Center:
@@ -274,25 +275,28 @@ public class FlowerMenu: UIImageView {
             self.startAngle = -80
             print("Constrain To Lower Right")
         case .UpperLeft:
-            let horizontalConstraints = NSLayoutConstraint.constraintsWithVisualFormat("H:|-28-[me]", options: [], metrics: nil, views: ["me": self])
-            let verticalConstraints = NSLayoutConstraint.constraintsWithVisualFormat("V:|-28-[me]", options: [], metrics: nil, views: ["me":self])
-            arrayOfConstraints.appendContentsOf(horizontalConstraints)
-            arrayOfConstraints.appendContentsOf(verticalConstraints)
+            if self.superview is UINavigationBar {
+                let horizontalConstraints = NSLayoutConstraint.constraintsWithVisualFormat("H:|[me]", options: [], metrics: nil, views: ["me": self])
+                let verticalConstraints = NSLayoutConstraint.constraintsWithVisualFormat("V:|[me]", options: [], metrics: nil, views: ["me":self])
+                arrayOfConstraints.appendContentsOf(horizontalConstraints)
+                arrayOfConstraints.appendContentsOf(verticalConstraints)
+            }else{
+                let horizontalConstraints = NSLayoutConstraint.constraintsWithVisualFormat("H:|-10-[me]", options: [], metrics: nil, views: ["me": self])
+                let verticalConstraints = NSLayoutConstraint.constraintsWithVisualFormat("V:|-25-[me]", options: [], metrics: nil, views: ["me":self])
+                arrayOfConstraints.appendContentsOf(horizontalConstraints)
+                arrayOfConstraints.appendContentsOf(verticalConstraints)
+            }
+
             print("Constrain To Upper Left")
             self.startAngle = 100
         case .UpperRight:
-            let horizontalConstraints = NSLayoutConstraint.constraintsWithVisualFormat("H:[me]-28-|", options: [], metrics: nil, views: ["me": self])
-            let verticalConstraints = NSLayoutConstraint.constraintsWithVisualFormat("V:|-28-[me]", options: [], metrics: nil, views: ["me":self])
+            let horizontalConstraints = NSLayoutConstraint.constraintsWithVisualFormat("H:[me]-10-|", options: [], metrics: nil, views: ["me": self])
+            let verticalConstraints = NSLayoutConstraint.constraintsWithVisualFormat("V:|-25-[me]", options: [], metrics: nil, views: ["me":self])
             arrayOfConstraints.appendContentsOf(horizontalConstraints)
             arrayOfConstraints.appendContentsOf(verticalConstraints)
             self.startAngle = 170
             print("Constrain To Upper Right")
         }
-        
-//        let width = NSLayoutConstraint(item: self, attribute: NSLayoutAttribute.Width, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.Width, multiplier: 1.0, constant: 50)
-//        let height = NSLayoutConstraint(item: self, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.Height, multiplier: 1.0, constant: 50)
-//        arrayOfConstraints.append(width)
-//        arrayOfConstraints.append(height)
         
         self.superview?.addConstraints(arrayOfConstraints)
         self.setNeedsLayout()

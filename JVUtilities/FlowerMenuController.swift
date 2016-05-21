@@ -94,10 +94,10 @@ public class FMViewControler: UIViewController, UIViewControllerTransitioningDel
         
     }
     public func flowerMenuDidExpand(){
-        print("Flower Menu Expended")
+        //print("Flower Menu Expended")
     }
     public func flowerMenuDidRetract(){
-        print("Flower Menu Collapsed")
+        //print("Flower Menu Collapsed")
     }
     
     
