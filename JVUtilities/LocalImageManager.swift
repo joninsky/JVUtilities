@@ -8,25 +8,44 @@
 
 import UIKit
 
-internal class ImageManager {
+
+public enum ImageType: String {
+    case PNG = "png"
+    case JPEG = "jpeg"
+}
+
+public class ImageManager {
     //MARK: Properties
     
     let fileManager = NSFileManager.defaultManager()
     
     
     //MARK: Inti
-    init(){
+    public init(){
         
     }
     
-    public func writeImageToFile(fileName: String, fileExtension: String, imageToWrite: UIImage, completion: (fileURL: NSURL?) -> Void){
-        let file = fileName + "Image." + fileExtension
+    public func writeImageToFile(fileName: String, fileExtension: ImageType, imageToWrite: UIImage, completion: (fileURL: NSURL?) -> Void){
+        let file = fileName + "Image." + fileExtension.rawValue
         let subFolder = fileName + "Image"
+        var imageData: NSData!
         
-        guard let imageData = UIImagePNGRepresentation(imageToWrite) else {
-            completion(fileURL: nil)
-            return
+        switch fileExtension {
+        case .PNG:
+            guard let data = UIImagePNGRepresentation(imageToWrite) else {
+                completion(fileURL: nil)
+                return
+            }
+            imageData = data
+        case .JPEG:
+            guard let data = UIImageJPEGRepresentation(imageToWrite, 0.8) else {
+                completion(fileURL: nil)
+                return
+            }
+            imageData = data
         }
+        
+
         
         var documentsURL: NSURL!
         
@@ -60,8 +79,8 @@ internal class ImageManager {
         //}
     }
     
-    public func getImageFromFile(fileName: String, fileExtension: String, completion:(theImage: UIImage?) -> Void) {
-        let file = fileName + "Image." + fileExtension
+    public func getImageFromFile(fileName: String, fileExtension: ImageType, completion:(theImage: UIImage?) -> Void) {
+        let file = fileName + "Image." + fileExtension.rawValue
         let subFolder = fileName + "Image"
         
         var documentsURL: NSURL!
@@ -89,6 +108,30 @@ internal class ImageManager {
         
         completion(theImage: image)
         
+    }
+    
+    
+    public func getImageDataFromFile(fileName: String, fileExtension: ImageType) -> NSData?{
+        let file = fileName + "Image." + fileExtension.rawValue
+        let subFolder = fileName + "Image"
+        
+        var documentsURL: NSURL!
+        
+        do {
+            documentsURL = try self.fileManager.URLForDirectory(NSSearchPathDirectory.DocumentDirectory, inDomain: NSSearchPathDomainMask.UserDomainMask, appropriateForURL: nil, create: false)
+        }catch {
+            return nil
+        }
+        
+        let folderURL = documentsURL.URLByAppendingPathComponent(subFolder)
+        
+        let fileURL = folderURL.URLByAppendingPathComponent(file)
+        
+        guard let imageData = NSData(contentsOfURL: fileURL) else {
+            return nil
+        }
+        
+        return imageData
     }
     
     public func generateFolderForDownload(fileName: String, fileExtension: String) -> NSURL? {
