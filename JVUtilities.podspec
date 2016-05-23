@@ -2,7 +2,7 @@
 
 Pod::Spec.new do |s|
 s.name = "JVUtilities"
-s.version = "0.1.1"
+s.version = "0.1.2"
 s.summary = "Molularized things that I find useful."
 s.description = <<-DESC
 Networking, Notificaitons, Tutorials, and other custom stuff.
