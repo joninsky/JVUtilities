@@ -132,7 +132,7 @@ public class NotificationManager {
         //See if the application badge number is zero
         if UIApplication.sharedApplication().applicationIconBadgeNumber == 0 {
             //If it is enumerate throught the view to badge
-            for (index, item) in self.viewsToBadge.enumerate() {
+            for (_, item) in self.viewsToBadge.enumerate() {
                 //Set the badger view to ""
                 item.aBadger.badgeValue = ""
             }
@@ -143,7 +143,7 @@ public class NotificationManager {
             }
         }else{
             //Do the same except set the value to the application badge number
-            for (index,item) in self.viewsToBadge.enumerate() {
+            for (_,item) in self.viewsToBadge.enumerate() {
                 item.aBadger.badgeValue = "\(UIApplication.sharedApplication().applicationIconBadgeNumber)"
             }
             for item in self.tabBarsToBadge {
