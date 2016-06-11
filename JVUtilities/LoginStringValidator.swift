@@ -46,14 +46,18 @@ public class LoginStringValidator {
         }
     }
     
-    public func badLogin(views: [UIView], reasonLabel: UILabel?, reason: String?) {
+    public func badLogin(views: [UIView], reasonLabel: UILabel?, reason: String?, color: UIColor?) {
         
         if reasonLabel != nil && reason != nil {
             reasonLabel?.text = reason!
         }
         
         let colorAnimation = CABasicAnimation(keyPath: "borderColor")
-        colorAnimation.fromValue = UIColor(red: 168/255, green: 17/255, blue: 0/255, alpha: 1.0).CGColor
+        if color != nil {
+            colorAnimation.fromValue = color!.CGColor
+        }else{
+            colorAnimation.fromValue = UIColor(red: 168/255, green: 17/255, blue: 0/255, alpha: 1.0).CGColor
+        }
         colorAnimation.toValue = UIColor.blackColor().CGColor
         let widthAnimation = CABasicAnimation(keyPath: "borderWidth")
         widthAnimation.fromValue = 3.0

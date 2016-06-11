@@ -37,13 +37,20 @@ public class FlowerMenu: UIImageView {
     public var delegate: FlowerMenuDelegate?
     public var showPedalLabels = false
     public var currentPosition: Position! {
+        willSet(value) {
+            self.previousPosition = self.currentPosition
+        }
         didSet{
+            
             self.constrainToPosition(self.currentPosition, animate: true)
         }
     }
     //MARK: Private Variables
     var pedalIDs: [String: UIView] = [String: UIView]()
     var positionView: UIView!
+    var previousPosition: Position?
+    var arrayOfConstraints: [NSLayoutConstraint] = [NSLayoutConstraint]()
+    lazy var focusView = UIView()
     //var theSuperView: UIView!
     
     //MARK: Init functions
@@ -117,6 +124,25 @@ public class FlowerMenu: UIImageView {
             })
         }
         self.menuIsExpanded = true
+        
+       // self.currentPosition = .Center
+        
+        
+        for c in self.arrayOfConstraints {
+            c.constant += 100
+        }
+        
+        self.setNeedsLayout()
+        
+        UIView.animateWithDuration(0.2) {
+            self.layoutIfNeeded()
+        }
+        
+        self.focusView.frame = self.superview!.frame
+        self.focusView.alpha = 0.5
+        self.focusView.backgroundColor = UIColor.blackColor()
+        self.superview?.insertSubview(self.focusView, belowSubview: self)
+        
     }
     
     public func shrivel(){
@@ -130,6 +156,23 @@ public class FlowerMenu: UIImageView {
             })
         }
         self.menuIsExpanded = false
+//        if self.previousPosition != nil {
+//            self.currentPosition = previousPosition
+//            self.previousPosition = nil
+//        }
+        
+        for c in self.arrayOfConstraints {
+            c.constant -= 100
+        }
+        
+        self.setNeedsLayout()
+        
+        UIView.animateWithDuration(0.2) {
+            self.layoutIfNeeded()
+        }
+        
+        self.focusView.removeFromSuperview()
+        
     }
     
     internal func didTapPopOutView(sender: UITapGestureRecognizer) {
@@ -184,7 +227,7 @@ public class FlowerMenu: UIImageView {
             
             let angle = atan * Double(180) / M_PI
             
-            self.pedalDistance = sqrt(pow(point.x - centerX, 2) + pow(point.y - centerY, 2))
+            //self.pedalDistance = sqrt(pow(point.x - centerX, 2) + pow(point.y - centerY, 2))
             
             self.startAngle = CGFloat(angle) - self.pedalSpace * CGFloat(indexOfView!)
             
@@ -251,54 +294,58 @@ public class FlowerMenu: UIImageView {
     
     //MARK: Constraint Adding
     func constrainToPosition(thePosition: Position, animate: Bool) {
-        var arrayOfConstraints = [NSLayoutConstraint]()
+        if self.arrayOfConstraints.count > 0 {
+            self.superview?.removeConstraints(self.arrayOfConstraints)
+            self.arrayOfConstraints.removeAll()
+        }
+        
         switch thePosition {
         case .Center:
             let verticalConstraint = NSLayoutConstraint(item: self, attribute: NSLayoutAttribute.CenterY, relatedBy: NSLayoutRelation.Equal, toItem: self.superview, attribute: NSLayoutAttribute.CenterY, multiplier: 1.0, constant: 0)
             let horizontalConstraint = NSLayoutConstraint(item: self, attribute: NSLayoutAttribute.CenterX, relatedBy: NSLayoutRelation.Equal, toItem: self.superview, attribute: NSLayoutAttribute.CenterX, multiplier: 1.0, constant: 0)
-            arrayOfConstraints.append(verticalConstraint)
-            arrayOfConstraints.append(horizontalConstraint)
+            self.arrayOfConstraints.append(verticalConstraint)
+            self.arrayOfConstraints.append(horizontalConstraint)
             self.startAngle = 0
             print("Constrain To Center")
         case .LowerLeft:
             let horizontalConstraints = NSLayoutConstraint.constraintsWithVisualFormat("H:|-28-[me]", options: [], metrics: nil, views: ["me": self])
             let verticalConstraints = NSLayoutConstraint.constraintsWithVisualFormat("V:[me]-28-|", options: [], metrics: nil, views: ["me":self])
-            arrayOfConstraints.appendContentsOf(horizontalConstraints)
-            arrayOfConstraints.appendContentsOf(verticalConstraints)
+            self.arrayOfConstraints.appendContentsOf(horizontalConstraints)
+            self.arrayOfConstraints.appendContentsOf(verticalConstraints)
             self.startAngle = 10
             print("Constrain To Lower Left")
         case .LowerRight:
             let horizontalConstraints = NSLayoutConstraint.constraintsWithVisualFormat("H:[me]-28-|", options: [], metrics: nil, views: ["me": self])
             let verticalConstraints = NSLayoutConstraint.constraintsWithVisualFormat("V:[me]-28-|", options: [], metrics: nil, views: ["me":self])
-            arrayOfConstraints.appendContentsOf(horizontalConstraints)
-            arrayOfConstraints.appendContentsOf(verticalConstraints)
+            self.arrayOfConstraints.appendContentsOf(horizontalConstraints)
+            self.arrayOfConstraints.appendContentsOf(verticalConstraints)
             self.startAngle = -80
             print("Constrain To Lower Right")
         case .UpperLeft:
             if self.superview is UINavigationBar {
                 let horizontalConstraints = NSLayoutConstraint.constraintsWithVisualFormat("H:|[me]", options: [], metrics: nil, views: ["me": self])
                 let verticalConstraints = NSLayoutConstraint.constraintsWithVisualFormat("V:|[me]", options: [], metrics: nil, views: ["me":self])
-                arrayOfConstraints.appendContentsOf(horizontalConstraints)
-                arrayOfConstraints.appendContentsOf(verticalConstraints)
+                self.arrayOfConstraints.appendContentsOf(horizontalConstraints)
+                self.arrayOfConstraints.appendContentsOf(verticalConstraints)
             }else{
                 let horizontalConstraints = NSLayoutConstraint.constraintsWithVisualFormat("H:|-10-[me]", options: [], metrics: nil, views: ["me": self])
-                let verticalConstraints = NSLayoutConstraint.constraintsWithVisualFormat("V:|-25-[me]", options: [], metrics: nil, views: ["me":self])
-                arrayOfConstraints.appendContentsOf(horizontalConstraints)
-                arrayOfConstraints.appendContentsOf(verticalConstraints)
+                let verticalConstraints = NSLayoutConstraint.constraintsWithVisualFormat("V:|-20-[me]", options: [], metrics: nil, views: ["me":self])
+                self.arrayOfConstraints.appendContentsOf(horizontalConstraints)
+                self.arrayOfConstraints.appendContentsOf(verticalConstraints)
             }
 
             print("Constrain To Upper Left")
             self.startAngle = 100
         case .UpperRight:
             let horizontalConstraints = NSLayoutConstraint.constraintsWithVisualFormat("H:[me]-10-|", options: [], metrics: nil, views: ["me": self])
-            let verticalConstraints = NSLayoutConstraint.constraintsWithVisualFormat("V:|-25-[me]", options: [], metrics: nil, views: ["me":self])
-            arrayOfConstraints.appendContentsOf(horizontalConstraints)
-            arrayOfConstraints.appendContentsOf(verticalConstraints)
+            let verticalConstraints = NSLayoutConstraint.constraintsWithVisualFormat("V:|-20-[me]", options: [], metrics: nil, views: ["me":self])
+            self.arrayOfConstraints.appendContentsOf(horizontalConstraints)
+            self.arrayOfConstraints.appendContentsOf(verticalConstraints)
             self.startAngle = 170
             print("Constrain To Upper Right")
         }
         
-        self.superview?.addConstraints(arrayOfConstraints)
+        self.superview?.addConstraints(self.arrayOfConstraints)
         self.setNeedsLayout()
         
         if animate {

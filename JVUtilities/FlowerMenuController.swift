@@ -26,6 +26,7 @@ public class FMViewControler: UIViewController, UIViewControllerTransitioningDel
     public var viewControllers = [UIViewController]()
     public var pedalImages = [UIImage]()
     public var pedalNames = [String]()
+    public var menuImage: UIImage?
     
     //MARK: Lifecycle Functions
     public override func viewDidLoad() {
@@ -50,11 +51,16 @@ public class FMViewControler: UIViewController, UIViewControllerTransitioningDel
     
     public func addViewController(viewController: UIViewController, withPedalImage image: UIImage, withPedalTitle title: String){
         if self.flowerMenu == nil {
-            guard let menuImage = UIImage(named: "MenuIconGood") else {
-                return
+            if self.menuImage == nil {
+                guard let image = UIImage(named: "MenuIconGood") else {
+                    return
+                }
+                self.flowerMenu = FlowerMenu(withPosition: .UpperRight, andSuperView: self.view, andImage: image)
+            }else{
+                self.flowerMenu = FlowerMenu(withPosition: .UpperRight, andSuperView: self.view, andImage: self.menuImage)
             }
             
-            self.flowerMenu = FlowerMenu(withPosition: .UpperRight, andSuperView: self.view, andImage: menuImage)
+            
             self.flowerMenu.showPedalLabels = true
             self.flowerMenu.delegate = self
         }
